@@ -4,20 +4,22 @@
 # rmblflux
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/r-lib/lifecycle/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/lifecycle/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/r-lib/lifecycle/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/lifecycle?branch=master)  
+[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
+
 <!-- badges: end -->
 
-The goal of rmblflux is to …
+The goal of `rmblflux` is to help all the lab members that would use the
+RBML tent flux data.
 
 ## Installation
 
-You can install the released version of rmblflux from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("rmblflux")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
