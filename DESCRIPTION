@@ -1,15 +1,16 @@
 Package: rmblflux
-Title: What the Package Does (One Line, Title Case)
+Title: Tools for NEE and ET Fitting.
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    c(person(given = "Paul Efren",
+           family = "Santos Andrade",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+           email = "paulefrens@gmail.com"),
+      person(given = "Macroecology Lab",
+             role = c("cph", "fnd")))
+Maintainer: Paul Efren Santos Andrade <paulefrens@gmail.com>
+Description: Sort a set of function used to fit NEE and ET ratios from co2 flux data measured on RMBL gradient with Licor7500.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
