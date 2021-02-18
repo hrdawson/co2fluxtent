@@ -18,4 +18,12 @@ RoxygenNote: 7.1.1
 URL: https://github.com/PaulESantos/rmblflux
 BugReports: https://github.com/PaulESantos/rmblflux/issues
 Imports: 
-    magrittr
+    magrittr,
+    dplyr,
+    data.table,
+    here,
+    tibble,
+    stringr,
+    tidyr,
+    purrr,
+    readr

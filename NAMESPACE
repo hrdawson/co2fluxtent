@@ -2,4 +2,6 @@
 
 export("%>%")
 export(check_na)
+export(read_tent_data)
 importFrom(magrittr,"%>%")
+importFrom(utils,data)

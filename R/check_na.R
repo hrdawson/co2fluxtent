@@ -7,6 +7,9 @@
 #' @export
 #'
 #' @examples
+#' # Basic usage
+#' mtcars %>%
+#' check_na()
 check_na <- function(df) {
   n <- function(x) {
     sum(is.na(x))

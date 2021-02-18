@@ -17,3 +17,8 @@ A tibble with the variables that contain NA values.
 Check NA values
 The function checks if the tibble contains NA values. Give as an output a tibble with variables that have NA values at the amount of this.
 }
+\examples{
+# Basic usage
+mtcars \%>\%
+check_na()
+}
