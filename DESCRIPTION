@@ -2,7 +2,15 @@ Package: rmblflux
 Title: Tools for NEE and ET Fitting
 Version: 0.0.1
 Authors@R: 
-    c(person(given = "Paul Efren",
+    c(person(given = "Brian J.",
+           family = "Enquist",
+           role = c("aut"),
+           email = "brianjenquist@gmail.com"),
+      person(given = "Alexander B.",
+           family = "Brummer",
+           role = c("aut"),
+           email = "brianjenquist@gmail.com"),
+      person(given = "Paul Efren",
            family = "Santos Andrade",
            role = c("aut", "cre"),
            email = "paulefrens@gmail.com"),
@@ -26,4 +34,6 @@ Imports:
     stringr,
     tidyr,
     purrr,
-    readr
+    readr,
+    lifecycle,
+    crayon
