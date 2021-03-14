@@ -2,5 +2,8 @@
 
 export("%>%")
 export(read_tent_data)
+importFrom(crayon,'%+%')
 importFrom(magrittr,"%>%")
+importFrom(stats,nls)
 importFrom(utils,data)
+importFrom(utils,read.table)
