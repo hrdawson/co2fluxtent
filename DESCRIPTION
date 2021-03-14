@@ -1,13 +1,13 @@
-Package: rmblflux
-Title: Tools for NEE and ET Fitting
+Package: co2fluxtent
+Title: Tools for NEE and ET fitting from CO2 flux
 Version: 0.0.1
 Authors@R: 
-    c(person(given = "Brian J.",
-           family = "Enquist",
-           role = c("aut"),
-           email = "brianjenquist@gmail.com"),
-      person(given = "Alexander B.",
+    c(person(given = "Alexander B.",
            family = "Brummer",
+           role = c("aut"),
+           email = "abrummer@ucla.edu"),
+      person(given = "Brian J.",
+           family = "Enquist",
            role = c("aut"),
            email = "brianjenquist@gmail.com"),
       person(given = "Paul Efren",
@@ -17,7 +17,7 @@ Authors@R:
       person(given = "Macroecology Lab",
              role = c("cph", "fnd")))
 Maintainer: Paul Efren Santos Andrade <paulefrens@gmail.com>
-Description: Sort a set of function used to fit NEE and ET ratios from co2 flux data measured on RMBL gradient with Licor7500.
+Description: Sort a set of function used to fit NEE and ET ratios from co2 flux data measured with Licor7500.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
