@@ -36,6 +36,7 @@
 #'          values.
 #'
 #' @references
+#'
 #' Wang, L., Niu, S., Good , S.P.,Soderberg K., McCabe, M.F.,
 #' Sherry, R.A., Luo, Y., Zhou, X., Xia, J., Caylor, K.K. (2013). The effect of warming on grassland
 #' evapotranspiration partitioning using laser-based isotope monitoring
