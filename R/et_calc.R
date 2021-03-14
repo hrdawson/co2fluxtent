@@ -51,12 +51,6 @@
 #' experimental ecosystem warming on CO2 fluxes in a montane meadow.
 #' Global Change Biology, 5: 125-141. https://doi.org/10.1046/j.1365-2486.1999.00216.x
 #'
-<<<<<<< HEAD
-=======
-#' @importFrom crayon '%+%'
-#' @importFrom stats nls
-#' @importFrom utils read.table
->>>>>>> fac3ab19938116b4554111ee43a457037ade9cdd
 #' @export
 et_calc <- function(skip = 9, volume = 2.197 , area = 1.69){
 
