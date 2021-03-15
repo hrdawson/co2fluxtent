@@ -22,14 +22,8 @@
 #'
 et_calc <- function(skip = 9, volume = 2.197 , area = 1.69){
 
-readline(cat(crayon::red("Please set the working directory to the folder \n that contains the "),
-                           crayon::bold(crayon::green("LiCOR")),
-             crayon::red(" files to be analyzed. \n "),
-             crayon::red("Do so with the "),
-                           crayon::bold(crayon::green("upcoming prompt")),
-             crayon::red("\n Note that you must choose a(any) file in the \n folder that you want to set as the working directory. \n Please press "),
-                           crayon::bold(crayon::green('enter')),
-             crayon::red(" to continue:")))
+  readline("Please set the working directory to the folder \n that contains the LiCOR files to be analyzed. \n Do so with the upcoming prompt. \n Note that you must choose a(any) file in the \n folder that you want to set as the working directory. \n Please press 'return' to continue.")
+
 
   setwd(dirname(file.choose()))
 
@@ -120,30 +114,16 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     plot(wprime~(time), main = filename)
 
     ## Queery user for start time for fitting.  Default is set to 10 in the if() statement
-    tstart <- readline(cat(
-      "Enter preferred ",
-        crayon::bold(crayon::green("start time")),
-        " for fitting. \n Do not include units. Round to nearest \n integer second. ",
-      crayon::bold(crayon::green("Do not use 0.")),
-        " If \n default of ",
-      crayon::bold(crayon::green("10s")),
-        " is preferred, press ",
-        crayon::bold(crayon::green('return'))))
+    tstart <- readline("Enter preferred start time for fitting. \n Do not include units. \n Round to nearest integer second. \n Do not use 0. \n  If default of 10s is preferred, press 'return':")
+
     if(!grepl("^[0-9]+$", tstart)){
       tstart <- 10
     }
     tstart <- as.integer(tstart)
 
     ## Queery user for finish time for fitting.  Default is set to 80 in the if() statement
-    tfinish <- readline(cat(
-      "Enter preferred ",
-      crayon::bold(crayon::green("finish time")),
-        " for fitting. \n Do not include units. Round to nearest \n integer second. ",
-      crayon::bold(crayon::green("Do not use 0.")),
-        " If \n default of ",
-      crayon::bold(crayon::green("80s")),
-        " is preferred, press ",
-      crayon::bold(crayon::green('return'))))
+    tfinish <- readline("Enter preferred finish time for fitting. \n Do not include units. \n Round to nearest integer second. \n  If default of 80s is preferred, press 'return':")
+
 
     if(!grepl("^[0-9]+$", tfinish)){
       tfinish <- 80
@@ -334,10 +314,8 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     # comment/uncomment to use print statement for including non-linear fitting with aic scores
     # print(data.frame("tstart" = tstart, "tfinish" = tfinish, "time" = time, "flux_lm" = flux_lm, "flux_exp" = flux_exp, "rsqd" = rsqd, "sigma" = sigma, "aic.lm" = aic.lm, "aic.nlm" = aic.nlm))
 
-    replicate <-  readline(cat("Would you like to ",
-                               crayon::bold(crayon::green("redo the fitting")),
-                                 " with \n a different time domain?",
-                               crayon::bold(crayon::green(" (y/n)"))))
+    replicate <- readline("Would you like to redo the fitting with \n a different time domain? (y/n)")
+
     if(replicate == "y"){
       et.fit(filename)
     } else {
