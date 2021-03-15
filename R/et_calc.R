@@ -1,80 +1,42 @@
 #' ET calc
 #'
 #' @description
+#'
 #' `r lifecycle::badge("stable")`
 #'
 #' This function is meant to perform a linear and non-linear fitting
 #' of `H2O absorpotion`, using data from LiCOR machines to provide
-#' estimates of evapotranspiraiton. It is modeled off of a previous
-#' function designed to perform similar fitting of `CO2` data to
-#' estimate `net ecosystem exchange`.
-#'
-#' Transpiration is only plants when stomata are open (daytime
-#' measurements). Evapotranspiration is everything, plants and
-#' soils (day time measurements), and evaporation is only soils,
-#' (night time or dark/respiration measurements).  Thus, we are
-#'  measuring, directly, only evapotranspiration `(ET)` and
-#'  evaporation `(E)`. But, we can extract transpiration `(T)` as:
-#'
-#'  `ET = E + T`
-#'
-#'  Some report `T/ET` ratios. Our estimates appear reasonable with
-#'  others reported by Wang et al. and Burba et al.  Do see
-#'  Wang et al.'s review paper for comments on reliability of
-#'  nightime measurements as proxy for evaporation.  Specifically,
-#'  he quotes studies that found measurable non-zero transpiration
-#'  during plant respiration.
+#' estimates of evapotranspiraiton
 #'
 #' @param skip integer: the number of lines of the data file to skip
-#'              before beginning to read data.
-#' @param volume The volume of the chamber in cubic meters.
-#' @param area The area of the chamber in square meters.
+#'              before beginning to read data
+#' @param volume The volume of the chamber in cubic meters
+#' @param area The area of the chamber in square meters
 #'
 #' @return  It will produce a plot of the data, queery the user if
 #'          they would like to modify the time interval over which
 #'          the data is fit, then print the paste statement of data
-#'          values.
-#'
-#' @references
-#'
-#' Wang, L., Niu, S., Good , S.P.,Soderberg K., McCabe, M.F.,
-#' Sherry, R.A., Luo, Y., Zhou, X., Xia, J., Caylor, K.K. (2013). The effect of warming on grassland
-#' evapotranspiration partitioning using laser-based isotope monitoring
-#' techniques. https://doi.org/10.1016/j.gca.2012.12.047.
-#'
-#' Burba, G., Schmidt, A., Scott, R.L., Nakai, T., Kathilankal, J.,
-#' Fratini, G., Hanson, C., Law, B., McDermitt, D.K., Eckles, R.,
-#' Furtaw, M. and Velgersdyk, M. (2012), Calculating CO2 and H2O eddy
-#' covariance fluxes from an enclosed gas analyzer using an instantaneous
-#' mixing ratio. Glob. Change Biol., 18: 385-399. https://doi.org/10.1111/j.1365-2486.2011.02536.x
-#'
-#' Saleska, S.R., Harte, J. and Torn, M.S. (1999), The effect of
-#' experimental ecosystem warming on CO2 fluxes in a montane meadow.
-#' Global Change Biology, 5: 125-141. https://doi.org/10.1046/j.1365-2486.1999.00216.x
-#'
+#'          values
 #' @export
+#' @author Alex Brummer
+#'
 et_calc <- function(skip = 9, volume = 2.197 , area = 1.69){
 
+readline(cat(crayon::red("Please set the working directory to the folder \n that contains the "),
+                           crayon::bold(crayon::green("LiCOR")),
+             crayon::red(" files to be analyzed. \n "),
+             crayon::red("Do so with the "),
+                           crayon::bold(crayon::green("upcoming prompt")),
+             crayon::red("\n Note that you must choose a(any) file in the \n folder that you want to set as the working directory. \n Please press "),
+                           crayon::bold(crayon::green('enter')),
+             crayon::red(" to continue:")))
 
-  #'###----Insert here the readline() command for querying user for
-  #'the directory of LiCOR files.--------
-  #'# For querying user to define the working directory in which the
-  #'LiCOR files are located.
-readline(cat(crayon::red("Please set the working directory to the folder \n that contains the " %+%
-                           crayon::green("LiCOR") %+%
-                           " files to be analyzed. \n " %+%
-                           "Do so with the " %+% crayon::green("upcoming prompt") %+%
-                           "\n Note that you must choose a(any) file in the \n folder that you want to set as the working directory. \n Please press " %+%
-                           crayon::green('enter') %+%
-                           " to continue:")))
   setwd(dirname(file.choose()))
 
-  #' Define directory as an object that contains the dir() item
-  #' names as a vector.
+
   directory <- dir()
 
-  #' Identify all file names corresponding to photosynthesis and
-  #' respiration measurements
+
   photo.names <- grep("[^resp].txt", grep("[^_a]\\.txt",
                                           dir(), value = TRUE),
                       value = TRUE)
@@ -82,17 +44,17 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
   resp.names <- grep("resp.txt", dir(), value = TRUE)
 
   et.fit <- function(filename){
-    #' For reading the .txt files, replace read.csv with read.table,
-    #' and add a skip = 9 parameter to the function.
+    # For reading the .txt files, replace read.csv with read.table,
+    # and add a skip = 9 parameter to the function.
     input <- read.table(filename, header = FALSE, skip = skip)
 
     if(nrow(input) > 90){
       input <- input[1:120,]
     }
-    #' If statement to load ambient file if measurement was made
-    #' (2006 and on) or to calculate ambient from the first five
-    #' seconds of the photosyntheis/respriation measurement
-    #' (2003-2006)
+    # If statement to load ambient file if measurement was made
+    # (2006 and on) or to calculate ambient from the first five
+    # seconds of the photosyntheis/respriation measurement
+    # (2003-2006)
 
     if(length(ambient.names) < 1){
       ambient <- input[1:5,]
@@ -121,9 +83,9 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
 
     ## Define vectors to work with
 
-    #' The data files are currently being read into R as factors,
-    #' hence the awkward as.numeric(as.character()) class coercion.
-    #'
+    # The data files are currently being read into R as factors,
+    # hence the awkward as.numeric(as.character()) class coercion.
+    #
     time <- as.numeric(as.character(input[,1])) #s
     #time <- seq(0, length(time1)-1, 1)# added for 2007
     co2 <- as.numeric(as.character(input[,8])) #umol/mol
@@ -138,9 +100,9 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     pav <- mean(press)
     cav <- mean(co2)
     wav <- mean(h2o)
-    #' wav <- mean(h2o)  # notes from mtg with brian 1/21/20:
-    #' Keep H20 here as is and leave NEE alone.  Separately,
-    #' calculate H20 rates using similar approach as with C02.
+    # wav <- mean(h2o)  # notes from mtg with brian 1/21/20:
+    # Keep H20 here as is and leave NEE alone.  Separately,
+    # calculate H20 rates using similar approach as with C02.
 
 
     wprime <- h2o/(1-(h2o/10**3))
@@ -159,14 +121,14 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
 
     ## Queery user for start time for fitting.  Default is set to 10 in the if() statement
     tstart <- readline(cat(
-      "Enter preferred " %+%
-        crayon::green("start time") %+%
-        " for fitting. \n Do not include units. Round to nearest \n integer second. " %+%
-        crayon::green("Do not use 0.") %+%
-        " If \n default of " %+%
-        crayon::green("10s") %+%
-        " is preferred, press " %+%
-        crayon::green('return')))
+      "Enter preferred ",
+        crayon::bold(crayon::green("start time")),
+        " for fitting. \n Do not include units. Round to nearest \n integer second. ",
+      crayon::bold(crayon::green("Do not use 0.")),
+        " If \n default of ",
+      crayon::bold(crayon::green("10s")),
+        " is preferred, press ",
+        crayon::bold(crayon::green('return'))))
     if(!grepl("^[0-9]+$", tstart)){
       tstart <- 10
     }
@@ -174,14 +136,14 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
 
     ## Queery user for finish time for fitting.  Default is set to 80 in the if() statement
     tfinish <- readline(cat(
-      "Enter preferred " %+%
-        crayon::green("finish time") %+%
-        " for fitting. \n Do not include units. Round to nearest \n integer second. " %+%
-        crayon::green("Do not use 0.") %+%
-        " If \n default of " %+%
-        crayon::green("80s") %+%
-        " is preferred, press " %+%
-        crayon::green('return')))
+      "Enter preferred ",
+      crayon::bold(crayon::green("finish time")),
+        " for fitting. \n Do not include units. Round to nearest \n integer second. ",
+      crayon::bold(crayon::green("Do not use 0.")),
+        " If \n default of ",
+      crayon::bold(crayon::green("80s")),
+        " is preferred, press ",
+      crayon::bold(crayon::green('return'))))
 
     if(!grepl("^[0-9]+$", tfinish)){
       tfinish <- 80
@@ -192,8 +154,8 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
 
     linear.fit <- lm(wprime[tstart:tfinish]~(time[tstart:tfinish]))
 
-    #' AIC value for linear model for later comparison with non-linear
-    #' model.
+    # AIC value for linear model for later comparison with non-linear
+    # model.
     aic.lm <- AIC(linear.fit)
 
     # Calculate intercept
@@ -202,8 +164,8 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     # Calculate slope
     dwdt <- as.numeric(linear.fit$coeff[2])
 
-    #' Calculate r-squared (we're not reporting chi-squared significance
-    #' from the non-linear fit, so this may not be so necessary)
+    # Calculate r-squared (we're not reporting chi-squared significance
+    # from the non-linear fit, so this may not be so necessary)
     rsqd <- summary(linear.fit)$r.sq
 
     # Calculate flux from linear model
@@ -216,47 +178,47 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     ## comment/uncomment to use print statement for including
     #non-linear fitting with aic scores
     ## Non-linear fitting code.
-    #' Set cnot to the actual first value of cprime used in the
-    #' fitting time domain.
+    # Set cnot to the actual first value of cprime used in the
+    # fitting time domain.
     wnot = wprime[tstart]
 
-    #' Define a temporary data frame from which the functional
-    #' variables come from.
+    # Define a temporary data frame from which the functional
+    # variables come from.
     df = data.frame(wprime, time)
 
     # Try subsetting df external to nls and nls2 functions.
     df <- subset(x = df, subset = (time > tstart & time < tfinish))
 
-    #' Define boundaries of parameter grid.  May need to modify for
-    #' evapotranspiration.
+    # Define boundaries of parameter grid.  May need to modify for
+    # evapotranspiration.
     strt <- data.frame(A = c(150, 850), B = c(0, 1000))
 
-    #' Use nls2() to scan through parameter grid, searching for
-    #' "best" actual starting points.  control variable is set to
-    #' prevent warnings from ending loop.
-    optimize.start <- nls2(wprime ~ (wnot - A)*exp(-time/B) + A, data = df, start=strt, algorithm = "brute-force", control = nls.control(warnOnly = TRUE), trace = FALSE) #(A=375, B=40)
+    # Use nls2() to scan through parameter grid, searching for
+    # "best" actual starting points.  control variable is set to
+    # prevent warnings from ending loop.
+    optimize.start <- nls2::nls2(wprime ~ (wnot - A)*exp(-time/B) + A, data = df, start=strt, algorithm = "brute-force", control = nls.control(warnOnly = TRUE), trace = FALSE) #(A=375, B=40)
 
-    #' Run nls() with the optimized starting values from previous
-    #' nls2().  Control variable is set to prevent warnings from
-    #' ending loop.  However, they will still be printed at end of
-    #' run.  When this happens, it is indicative of the fact that
-    #' the function parameters (A and B) are large (non-physical)
-    #' for the fitting, yet still produce a fit.  This is worth
-    #' further investigation.  However, it appears that the nee
-    #' value produced by the exponential model in such circumstances
-    #' does not deviate from the linear model by much more than half
-    #'  a percent.  Add a "trace = TRUE" parameter setting to the
-    #' nls() function to be able to watch the values of A and B change
-    #' with each iteration.  A is Css and B is tau, from Saleska et al.,
-    #'  and to translate to variables extracted from fit further down.
-    #'
+    # Run nls() with the optimized starting values from previous
+    # nls2().  Control variable is set to prevent warnings from
+    # ending loop.  However, they will still be printed at end of
+    # run.  When this happens, it is indicative of the fact that
+    # the function parameters (A and B) are large (non-physical)
+    # for the fitting, yet still produce a fit.  This is worth
+    # further investigation.  However, it appears that the nee
+    # value produced by the exponential model in such circumstances
+    # does not deviate from the linear model by much more than half
+    #  a percent.  Add a "trace = TRUE" parameter setting to the
+    # nls() function to be able to watch the values of A and B change
+    # with each iteration.  A is Css and B is tau, from Saleska et al.,
+    #  and to translate to variables extracted from fit further down.
+    #
     uptake.fm <- nls(wprime ~ (wnot - A)*exp(-time/B) + A, data = df, start = coef(optimize.start), control = nls.control(warnOnly = TRUE), trace = FALSE)
 
     ##
     sigma <- summary(uptake.fm)$sigma
 
-    #' AIC value for non-linear model for later comparison with linear
-    #' model.
+    # AIC value for non-linear model for later comparison with linear
+    # model.
     aic.nlm <- AIC(uptake.fm)
 
     Wss = summary(uptake.fm)$param[1]
@@ -267,11 +229,11 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     curve((wnot - Wss)*exp(-(x)/tau) + Wss, col = 4, add = TRUE)
     #equation 3 in Saleska 1999 to plot for visual inspection.##
 
-    #' need 'time' variable for day or night, preferably time of day too,
-    #' (though consider as separate column).
+    # need 'time' variable for day or night, preferably time of day too,
+    # (though consider as separate column).
     # time <- "Evapotranspiration"
-    #' if(length(grep("resp", filename, ignore.case = TRUE,
-    #'  value = FALSE)) == 1){
+    # if(length(grep("resp", filename, ignore.case = TRUE,
+    #  value = FALSE)) == 1){
     #   time <- "Evaporation"
     # }
 
@@ -279,9 +241,9 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     #### Extracting filename information with flexibility
     ## Format should be site_season_time_date_plot.
 
-    #' Season can be extracted from the parent folder.  Use if/else
-    #' if/else statement to check for early, peak, late within the
-    #' parent folder name to indicate season.
+    # Season can be extracted from the parent folder.  Use if/else
+    # if/else statement to check for early, peak, late within the
+    # parent folder name to indicate season.
 
     parent_folder_path <- getwd()
 
@@ -335,7 +297,7 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
                    "um", "pf", "mo")
 
     #site <- filename_unlist[filename_unlist %in% site_list]
-    site1 <- filename_unlist[filename_unlist %in% site_list]
+    site <- filename_unlist[filename_unlist %in% site_list]
 
 
     ## Now searching for the plot number.
@@ -372,10 +334,10 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     # comment/uncomment to use print statement for including non-linear fitting with aic scores
     # print(data.frame("tstart" = tstart, "tfinish" = tfinish, "time" = time, "flux_lm" = flux_lm, "flux_exp" = flux_exp, "rsqd" = rsqd, "sigma" = sigma, "aic.lm" = aic.lm, "aic.nlm" = aic.nlm))
 
-    replicate <-  readline(cat("Would you like to " %+%
-                                 crayon::green("redo the fitting") %+%
-                                 " with \n a different time domain?" %+%
-                                 crayon::green(" (y/n)")))
+    replicate <-  readline(cat("Would you like to ",
+                               crayon::bold(crayon::green("redo the fitting")),
+                                 " with \n a different time domain?",
+                               crayon::bold(crayon::green(" (y/n)"))))
     if(replicate == "y"){
       et.fit(filename)
     } else {
@@ -385,20 +347,6 @@ readline(cat(crayon::red("Please set the working directory to the folder \n that
     }
   }
 
-
-
-
-  # stats.df <- c()
-
-  # for (i in 1:length(photo.names)){
-  #  stats.df <- rbind(stats.df, et.fit(photo.names[i]))
-  #  }
-
-  # if (length(resp.names) > 1){
-  #    for (i in 1:length(resp.names)){
-  #     stats.df <- rbind(stats.df, et.fit(resp.names[i]))
-  #    }
-  # }
 
   if(length(photo.names) > 1 & length(resp.names) > 1){
     stats.df.photo <- c()
