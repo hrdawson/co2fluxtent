@@ -37,8 +37,8 @@ nee_calc <- function(skip = 9, volume = 2.197, area = 1.69){
     ##' For reading the .txt files, replace read.csv with read.table, and
     ##' add a skip = 9 parameter to the function.
     input <- read.table(filename, header = FALSE, skip = skip)
-    if(nrow(input) > 120){
-      input <- input[1:120,]
+    if(nrow(input) > 90){
+      input <- input[1:90,]
     }
     #####
     if(length(ambient.names) < 1){
