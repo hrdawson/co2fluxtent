@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# co2fluxtent
+# co2fluxtent <a href='https://github.com/PaulESantos/co2fluxtent'><img src='man/figures/tent.jfif' align="right" height="150" width="350" /></a>
 
 <!-- badges: start -->
 
@@ -13,8 +13,9 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lif
 
 <!-- badges: end -->
 
-The goal of `co2fluxtent` is to help all the lab members that would use
-the RBML tent flux data.
+The goal of `co2fluxtent` is to provide the tools to analyze net
+ecosystem exchange (NEE) and transpiration (T) and evapotranspiration
+(ET) with their own LiCOR 7500 data.
 
 ## Installation
 
