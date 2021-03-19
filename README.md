@@ -11,6 +11,7 @@ coverage](https://codecov.io/gh/r-lib/lifecycle/branch/master/graph/badge.svg)](
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 
+[![R-CMD-check](https://github.com/PaulESantos/rmblflux/workflows/R-CMD-check/badge.svg)](https://github.com/PaulESantos/rmblflux/actions)
 <!-- badges: end -->
 
 The goal of `co2fluxtent` is to provide the tools to analyze net
