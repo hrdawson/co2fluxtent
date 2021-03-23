@@ -5,7 +5,6 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/r-lib/lifecycle/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/lifecycle/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/r-lib/lifecycle/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/lifecycle?branch=master)  
 [![Lifecycle:
