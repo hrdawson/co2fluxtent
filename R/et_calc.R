@@ -10,7 +10,7 @@
 #'
 #' @param skip integer: the number of lines of the data file to skip
 #'              before beginning to read data
-#' @param volume The volume of the chamber in cubic meters
+#' @param vol The volume of the chamber in cubic meters
 #' @param area The area of the chamber in square meters
 #'
 #' @return  It will produce a plot of the data, queery the user if
@@ -20,7 +20,7 @@
 #' @export
 #' @author Alex Brummer
 #'
-et_calc <- function(skip = 9, volume = 2.197, area = 1.69){
+et_calc <- function(skip = 9, vol = 2.197, area = 1.69){
   ### This function is meant to perform a linear and non-linear fitting of h2o absorpotion data from LiCOR machines to provide estimates of evapotranspiraiton.  It is modeled off of a previous function designed to perform similar fitting of co2 data to estimate net ecosystem exchange.  The nee.calc code still exists as a future step will be to integrate these two fits to be performed simultaneously (the nee.fit function assumes that h20 remains constant).  All comments from previous version/s are maintained.
 
   ### Transpiration is only plants when stomata are open (daytime measurements).  Evapotranspiration is everything, plants and soils (daytime measurements), and evaporation is only soils, (nighttime or dark/respiration measurements).  Thus, we are measuring, directly, only evapotranspiration (ET) and evaporation (E).  But, we can extract Transpiration as ET = E + T (see Wang et al.).  Some report T/ET ratios.  Our estimates appear reasonable with others reported by Wang et al. and Burba et al.  Do see Wang et al.'s review paper for comments on reliability of nightime measurements as proxy for evaporation.  Specifically, he quotes studies that found measurable non-zero transpiration during plant respiration.
@@ -71,8 +71,8 @@ et_calc <- function(skip = 9, volume = 2.197, area = 1.69){
     }
 
     # define constants
-    vol = volume #2.197   # m^3, tent volume
-    area = area #1.69   # m^2, tent area
+    vol  #2.197   # m^3, tent volume
+    area  #1.69   # m^2, tent area
     R = 8.314472 	# J/mol K
     #
 

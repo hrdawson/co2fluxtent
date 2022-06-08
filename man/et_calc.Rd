@@ -4,13 +4,13 @@
 \alias{et_calc}
 \title{ET calc}
 \usage{
-et_calc(skip = 9, volume = 2.197, area = 1.69)
+et_calc(skip = 9, vol = 2.197, area = 1.69)
 }
 \arguments{
 \item{skip}{integer: the number of lines of the data file to skip
 before beginning to read data}
 
-\item{volume}{The volume of the chamber in cubic meters}
+\item{vol}{The volume of the chamber in cubic meters}
 
 \item{area}{The area of the chamber in square meters}
 }

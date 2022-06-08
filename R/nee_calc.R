@@ -9,7 +9,7 @@
 #'
 #' @param skip integer: the number of lines of the data file to skip
 #'              before beginning to read data.
-#' @param volume The volume of the chamber in cubic meters.
+#' @param vol The volume of the chamber in cubic meters.
 #' @param area The area of the chamber in square meters.
 #'
 #' @return  It will produce a plot of the data, queery the user if
@@ -18,7 +18,7 @@
 #'          values.
 #' @export
 #' @author Alex Brummer
-nee_calc <- function(skip = 9, volume = 2.197, area = 1.69){
+nee_calc <- function(skip = 9, vol = 2.197, area = 1.69){
 
   readline("Please set the working directory to the folder \n that contains the LiCOR files to be analyzed. \n Do so with the upcoming prompt. \n Note that you must choose a(any) file in the \n folder that you want to set as the working directory. \n Please press 'return' to continue.")
   setwd(dirname(file.choose()))
@@ -94,8 +94,8 @@ nee_calc <- function(skip = 9, volume = 2.197, area = 1.69){
 
 
     #  /// define constants - for Enquist Tent///
-    vol = volume   # m^3, big tent volume
-    area = area   # m^2, big tent area
+    vol   # m^3, big tent volume
+    area   # m^2, big tent area
 
     R = 8.314472 	# J/mol K
 
