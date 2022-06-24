@@ -61,38 +61,6 @@ nee_calc <- function(skip = 9, vol = 2.197, area = 1.69){
       }
     }
     #####
-    # if(length(ambient.names) >= 1){
-    #   if(length(grep("resp", filename, ignore.case = TRUE, value = FALSE)) == 1){
-    #     ambient_filename1 <- paste(strsplit(filename, "resp.txt"), "a.txt", sep = "")
-    #   }else if(length(grep("photo", filename, ignore.case = TRUE, value = FALSE)) == 1){
-    #     ambient_filename1 <- paste(strsplit(filename, "photo.txt"), "a.txt", sep = "")
-    #   }else{
-    #     ambient_filename1 <- paste(strsplit(filename, ".txt"), "a.txt", sep = "")
-    #   }
-    # }
-    #
-    # if(ambient_filename1 %in% ambient.names){
-    #   ambient <- read.table(ambient_filename1, header = FALSE, skip = skip)
-    # }
-    # else{
-    #   ambient <- input[1:5,]
-    # }
-    # #####
-    ## If statement to load ambient file if measurement was made (2006 and on) or to calculate ambient from the first five seconds of the photosyntheis/respriation measurement (2003-2006)
-    #if(length(ambient.names) >= 1){
-    #  if(length(grep("resp", filename, ignore.case = TRUE, value = FALSE)) == 1){
-    #    ambient <- read.table(paste(strsplit(filename, "resp.txt"), "a.txt", sep = ""), header = FALSE, skip = skip)
-    #  }else if(length(grep("photo", filename, ignore.case = TRUE, value = FALSE)) == 1){
-    #    ambient <- read.table(paste(strsplit(filename, "photo.txt"), "a.txt", sep = ""), header = FALSE, skip = skip)
-    #  }else{
-    #    ambient <- read.table(paste(strsplit(filename, ".txt"), "a.txt", sep = ""), header = FALSE, skip = skip)
-    #  }
-    #}else{
-    # grab first five rows of input file for ambient, keep all columns to use same averaging code below for wamb measure.
-    #  ambient <- input[1:5,]
-    #}
-
-
     #  /// define constants - for Enquist Tent///
     vol   # m^3, big tent volume
     area   # m^2, big tent area
@@ -123,10 +91,6 @@ nee_calc <- function(skip = 9, vol = 2.197, area = 1.69){
 
     #ambient co2 measurement to determine if leak is occurring.
     camb <- mean(as.numeric(as.character(ambient[,8]))/(1-(as.numeric(as.character(ambient[,12]))/1000)))
-
-    ## I think this is just the ideal gas law, but not clear to me why ideal gaw law is necessary for converting from whatever the old units were (find out and enter) to the new units.  The 44 is the molar mass of CO2, specifically, 44 grams/mole.
-
-    # camb <- camb*R*(tav+273.15)/(44*pav)    # change to umol/mol or ppm  The conversion is not justified, and appears to cause large deviations in NEE values.
 
     #  /// Plotting the CO2 vs. Time Curve //
 
@@ -187,18 +151,6 @@ nee_calc <- function(skip = 9, vol = 2.197, area = 1.69){
 
     # Run nls() with the optimized starting values from previous nls2().  Control variable is set to prevent warnings from ending loop.  However, they will still be printed at end of run.  When this happens, it is indicative of the fact that the function parameters (A and B) are large (non-physical) for the fitting, yet still produce a fit.  This is worth further investigation.  However, it appears that the nee value produced by the exponential model in such circumstances does not deviate from the linear model by much more than half a percent.  Add a "trace = TRUE" parameter setting to the nls() function to be able to watch the values of A and B change with each iteration.  A is Css and B is tau, from Saleska et al., and to translate to variables extracted from fit further down.
     uptake.fm <- nls(cprime ~ (cnot - A)*exp(-time/B) + A, data = df, start = coef(optimize.start), control = nls.control(warnOnly = TRUE), trace = FALSE)
-
-    # # Define a subset category from the tstart and tfinish variables.
-    # subsettime <- time > tstart & time < tfinish
-    #
-    # # Define boundaries of parameter grid.
-    # strt <- data.frame(A = c(150, 850), B = c(0, 1000))
-    #
-    # # Use nls2() to scan through parameter grid, searching for "best" actual starting points.  control variable is set to prevent warnings from ending loop.
-    # optimize.start <- nls2(cprime ~ (cnot - A)*exp(-time/B) + A, data = df, start=strt, subset = subsettime, algorithm = "brute-force", control = nls.control(warnOnly = TRUE)) #(A=375, B=40)
-    #
-    # # Run nls() with the optimized starting values from previous nls2().  Control variable is set to prevent warnings from ending loop.  However, they will still be printed at end of run.  When this happens, it is indicative of the fact that the function parameters (A and B) are large (non-physical) for the fitting, yet still produce a fit.  This is worth further investigation.  However, it appears that the nee value produced by the exponential model in such circumstances does not deviate from the linear model by much more than half a percent.  Add a "trace = TRUE" parameter setting to the nls() function to be able to watch the values of A and B change with each iteration.
-    # uptake.fm <- nls(cprime ~ (cnot - A)*exp(-time/B) + A, data = df, start = coef(optimize.start), subset = subsettime, control = nls.control(warnOnly = TRUE))
 
     ##
     sigma <- summary(uptake.fm)$sigma

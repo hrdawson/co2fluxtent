@@ -99,11 +99,6 @@ et_calc <- function(skip = 9, vol = 2.197, area = 1.69){
 
     #ambient H2O measurement to determine if leak is occurring.
     wamb <- mean(as.numeric(as.character(ambient[,12]))/(1-(as.numeric(as.character(ambient[,12]))/1000)))
-
-    ## I think this is just the ideal gas law, but not clear to me why ideal gaw law is necessary for converting from whatever the old units were (find out and enter) to the new units.  The 18 represents the molar mass of H2O, 18 grams/mole.
-
-    # wamb <- wamb*R*(tav+273.15)/(18*pav)  # change to umol/mol or ppm  The conversion is not justified, and appears to cause large deviations in NEE values.
-
     #  /// Plotting the H20 vs. Time Curve //
 
     plot(wprime~(time), main = filename)
@@ -164,18 +159,6 @@ et_calc <- function(skip = 9, vol = 2.197, area = 1.69){
     # Run nls() with the optimized starting values from previous nls2().  Control variable is set to prevent warnings from ending loop.  However, they will still be printed at end of run.  When this happens, it is indicative of the fact that the function parameters (A and B) are large (non-physical) for the fitting, yet still produce a fit.  This is worth further investigation.  However, it appears that the nee value produced by the exponential model in such circumstances does not deviate from the linear model by much more than half a percent.  Add a "trace = TRUE" parameter setting to the nls() function to be able to watch the values of A and B change with each iteration.  A is Css and B is tau, from Saleska et al., and to translate to variables extracted from fit further down.
     uptake.fm <- nls(wprime ~ (wnot - A)*exp(-time/B) + A, data = df, start = coef(optimize.start), control = nls.control(warnOnly = TRUE), trace = FALSE)
 
-    # # Define a subset category from the tstart and tfinish variables.
-    # subsettime <- time > tstart & time < tfinish
-    #
-    # # Define boundaries of parameter grid.  May need to modify for evapotranspiration.
-    # strt <- data.frame(A = c(150, 850), B = c(0, 1000))
-    #
-    # # Use nls2() to scan through parameter grid, searching for "best" actual starting points.  control variable is set to prevent warnings from ending loop.
-    # optimize.start <- nls2(wprime ~ (wnot - A)*exp(-time/B) + A, data = df, start=strt, subset = subsettime, algorithm = "brute-force", control = nls.control(warnOnly = TRUE), trace = FALSE) #(A=375, B=40)
-    #
-    # # Run nls() with the optimized starting values from previous nls2().  Control variable is set to prevent warnings from ending loop.  However, they will still be printed at end of run.  When this happens, it is indicative of the fact that the function parameters (A and B) are large (non-physical) for the fitting, yet still produce a fit.  This is worth further investigation.  However, it appears that the nee value produced by the exponential model in such circumstances does not deviate from the linear model by much more than half a percent.  Add a "trace = TRUE" parameter setting to the nls() function to be able to watch the values of A and B change with each iteration.  A is Css and B is tau, from Saleska et al., and to translate to variables extracted from fit further down.
-    # uptake.fm <- nls(wprime ~ (wnot - A)*exp(-time/B) + A, data = df, start = coef(optimize.start), subset = subsettime, control = nls.control(warnOnly = TRUE), trace = FALSE)
-
     ##
     sigma <- summary(uptake.fm)$sigma
 
@@ -188,13 +171,6 @@ et_calc <- function(skip = 9, vol = 2.197, area = 1.69){
     flux_exp <- -((wamb-Wss)/(area*tau))*(vol*pav*(10**3-wav)/(R*(tav + 273.15))) #equation 4 in Saleska 1999
 
     curve((wnot - Wss)*exp(-(x)/tau) + Wss, col = 4, add = TRUE)	#equation 3 in Saleska 1999 to plot for visual inspection.##
-
-    # need 'time' variable for day or night, preferably time of day too, (though consider as separate column).
-    # time <- "Evapotranspiration"
-    # if(length(grep("resp", filename, ignore.case = TRUE, value = FALSE)) == 1){
-    #   time <- "Evaporation"
-    # }
-
 
     #### Extracting filename information with flexibility
     ## Format should be site_season_time_date_plot.
