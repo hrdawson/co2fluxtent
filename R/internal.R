@@ -1,4 +1,4 @@
-
+#' @export
 #' @keywords internal
 mgrepl <- function(patterns, text, log.fun = all, na.replace = FALSE,
                    use.which = FALSE, cores = 1, ...) {

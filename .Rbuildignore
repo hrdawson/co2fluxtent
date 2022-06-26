@@ -5,3 +5,5 @@
 ^\.github$
 ^original_code
 ^road peak day
+^cran-comments\.md$
+^dev/

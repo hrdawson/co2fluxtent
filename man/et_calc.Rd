@@ -24,8 +24,8 @@ values
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This function is meant to perform a linear and non-linear fitting
-of \verb{H2O absorpotion}, using data from LiCOR machines to provide
-estimates of evapotranspiraiton
+of \verb{H2O absorption}, using data from LiCOR machines to provide
+estimates of evapotranspiration
 }
 \author{
 Alex Brummer

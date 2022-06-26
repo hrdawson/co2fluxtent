@@ -5,8 +5,8 @@
 #' `r lifecycle::badge("stable")`
 #'
 #' This function is meant to perform a linear and non-linear fitting
-#' of `H2O absorpotion`, using data from LiCOR machines to provide
-#' estimates of evapotranspiraiton
+#' of `H2O absorption`, using data from LiCOR machines to provide
+#' estimates of evapotranspiration
 #'
 #' @param skip integer: the number of lines of the data file to skip
 #'              before beginning to read data
