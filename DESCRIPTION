@@ -14,9 +14,7 @@ License: MIT + file LICENSE
 URL: https://github.com/PaulESantos/co2fluxtent
 BugReports: https://github.com/PaulESantos/co2fluxtent/issues
 Imports: 
-    here,
     nls2,
-    parallel,
     purrr,
     stats,
     tibble,
