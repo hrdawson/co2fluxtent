@@ -234,13 +234,13 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
   if ("nee" == param) {
     names.vec <- c(
       "filename", "tstart", "tfinish",
-      "time", "camb", "tav", "pav", "nee_lm", "nee_exp",
+      "camb", "tav", "pav", "nee_lm", "nee_exp",
       "lm_rsqd", "non_linear_sigma", "aic_lm", "aic_nlm"
     )
   } else if ("et" == param) {
     names.vec <- c(
       "filename", "tstart", "tfinish",
-      "time", "wamb", "tav", "pav", "cav", "flux_lm", "flux_nlm",
+      "wamb", "tav", "pav", "cav", "flux_lm", "flux_nlm",
       "lm_rsqd", "non_linear_sigma", "aic_lm", "aic_nlm"
     )
   }
