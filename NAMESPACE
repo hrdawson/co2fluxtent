@@ -3,4 +3,5 @@
 export("%>%")
 export(et_calc)
 export(nee_calc)
+export(str_delete_before)
 importFrom(magrittr,"%>%")
