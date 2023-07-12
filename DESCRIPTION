@@ -11,38 +11,16 @@ Maintainer: Paul Efren Santos Andrade <paulefrens@gmail.com>
 Description: Sort a set of function used to fit NEE and ET ratios from co2
     flux data measured with Licor7500.
 License: MIT + file LICENSE
-URL: https://github.com/PaulESantos/co2fluxtent
-BugReports: https://github.com/PaulESantos/co2fluxtent/issues
-Imports: 
-    nls2,
-    purrr,
-    stats,
-    tibble,
-    utils
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-<<<<<<< HEAD
 RoxygenNote: 7.2.3
 URL: https://github.com/PaulESantos/rmblflux
 BugReports: https://github.com/PaulESantos/rmblflux/issues
 Imports: 
-    magrittr,
-    dplyr,
-    data.table,
-    here,
     tibble,
     stringr,
-    tidyr,
     purrr,
-    readr,
-    lifecycle,
-    crayon,
-    proto,
     nls2
-=======
-RoxygenNote: 7.2.0
 Suggests: 
     testthat (>= 3.0.0)
-Config/testthat/edition: 3
->>>>>>> 50b1760fe9acbed6971b3b484908bef3e7596f70
