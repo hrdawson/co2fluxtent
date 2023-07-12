@@ -1,27 +1,28 @@
 Package: co2fluxtent
-Title: Tools for NEE and ET fitting from CO2 flux
-Version: 0.0.1
-Authors@R: 
-    c(person(given = "Alexander B.",
-           family = "Brummer",
-           role = c("aut"),
-           email = "abrummer@ucla.edu"),
-      person(given = "Brian J.",
-           family = "Enquist",
-           role = c("aut"),
-           email = "brianjenquist@gmail.com"),
-      person(given = "Paul Efren",
-           family = "Santos Andrade",
-           role = c("aut", "cre"),
-           email = "paulefrens@gmail.com"),
-      person(given = "Macroecology Lab",
-             role = c("cph", "fnd")))
+Title: Tools for NEE and ET Fitting from CO2 Flux
+Version: 0.0.2
+Authors@R: c(
+    person("Alexander B.", "Brummer", , "abrummer@ucla.edu", role = "aut"),
+    person("Brian J.", "Enquist", , "brianjenquist@gmail.com", role = "aut"),
+    person("Paul Efren", "Santos Andrade", , "paulefrens@gmail.com", role = c("aut", "cre")),
+    person("Macroecology Lab", role = c("cph", "fnd"))
+  )
 Maintainer: Paul Efren Santos Andrade <paulefrens@gmail.com>
-Description: Sort a set of function used to fit NEE and ET ratios from co2 flux data measured with Licor7500.
+Description: Sort a set of function used to fit NEE and ET ratios from co2
+    flux data measured with Licor7500.
 License: MIT + file LICENSE
+URL: https://github.com/PaulESantos/co2fluxtent
+BugReports: https://github.com/PaulESantos/co2fluxtent/issues
+Imports: 
+    nls2,
+    purrr,
+    stats,
+    tibble,
+    utils
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
+<<<<<<< HEAD
 RoxygenNote: 7.2.3
 URL: https://github.com/PaulESantos/rmblflux
 BugReports: https://github.com/PaulESantos/rmblflux/issues
@@ -39,3 +40,9 @@ Imports:
     crayon,
     proto,
     nls2
+=======
+RoxygenNote: 7.2.0
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+>>>>>>> 50b1760fe9acbed6971b3b484908bef3e7596f70

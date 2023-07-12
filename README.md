@@ -6,11 +6,11 @@
 <!-- badges: start -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/r-lib/lifecycle/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/lifecycle?branch=master)  
+coverage](https://codecov.io/gh/r-lib/lifecycle/branch/master/graph/badge.svg)](https://app.codecov.io/gh/r-lib/lifecycle?branch=master)  
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-
-[![R-CMD-check](https://github.com/PaulESantos/rmblflux/workflows/R-CMD-check/badge.svg)](https://github.com/PaulESantos/rmblflux/actions)
+[![R-CMD-check](https://github.com/PaulESantos/co2fluxtent/workflows/R-CMD-check/badge.svg)](https://github.com/PaulESantos/co2fluxtent/actions)
+[![R-CMD-check](https://github.com/PaulESantos/co2fluxtent/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/PaulESantos/co2fluxtent/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of `co2fluxtent` is to provide the tools to analyze net
@@ -23,15 +23,6 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("PaulESantos/co2fluxtent")
-```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-#library(co2fluxtent)
-## basic example code
+# install.packages("pak")
+pak::pkg_install("PaulESantos/co2fluxtent")
 ```
