@@ -199,3 +199,26 @@ function is a tibble with the following columns:
 1 06172020_almont_night_1resp.txt    20      60    308. -65.7  75.7  -25.5   -12.0    0.952         3.23       137.    211. 
 2 06172020_almont_night_3resp.txt    10      80    305. -65.7  75.7  -0.194  -0.157   0.0369        0.364      60.9    61.2
 ```
+
+### Citation
+
+To cite the `co2fluxtent` package, please use:
+
+``` r
+citation("co2fluxtent")
+#> To cite package 'co2fluxtent' in publications use:
+#> 
+#>   Brummer A, Enquist B, Santos-Andrade P (2023). _co2fluxtent: Tools
+#>   for NEE and ET Fitting from CO2 Flux_. R package version 0.0.2,
+#>   <https://github.com/PaulESantos/co2fluxtent>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {co2fluxtent: Tools for NEE and ET Fitting from CO2 Flux},
+#>     author = {Alexander B. Brummer and Brian J. Enquist and Paul Efren Santos-Andrade},
+#>     year = {2023},
+#>     note = {R package version 0.0.2},
+#>     url = {https://github.com/PaulESantos/co2fluxtent},
+#>   }
+```

@@ -157,5 +157,11 @@ While the `flux_calc()` function is in operation, it will prompt the user to spe
 2 06172020_almont_night_3resp.txt    10      80    305. -65.7  75.7  -0.194  -0.157   0.0369        0.364      60.9    61.2
 ```
 
+### Citation
+To cite the `co2fluxtent` package, please use:
+
+```{r}
+citation("co2fluxtent")
+```
 
 
