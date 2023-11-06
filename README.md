@@ -110,35 +110,81 @@ working with LiCOR data, simplifying the initial data preparation steps
 in your workflow.
 
 ``` r
+library(co2fluxtent)
 
-df <- read_files("./inst/extdata")
-data <- df |> 
-  flux_calc()
+# These data files are provided to help you get started quickly and understand the data processing workflow
+
+licor_files <- co2fluxtent::read_files(fs::path_package(package = "co2fluxtent",
+                 "extdata"))
+                 
+No matching photo files found.
+
+> print(licor_files)
+
+$photo_names
+character(0)
+
+$ambient_names
+[1] "./co2fluxtent/extdata/06172020_almont_night_1a.txt"
+[2] "./co2fluxtent/extdata/06172020_almont_night_3a.txt"
+
+$resp_names
+[1] "./co2fluxtent/extdata/06172020_almont_night_1resp.txt"
+[2] "./co2fluxtent/extdata/06172020_almont_night_3resp.txt"
+                 
+                 
+```
+
+The `flux_calc` function is a powerful tool for analyzing LiCOR data,
+utilizing the results obtained from the `read_files` function as its
+input. With `flux_calc`, you can seamlessly process LiCOR data, making
+it an integral part of your data analysis workflow. This function allows
+you to perform linear and non-linear fitting to the Net Ecosystem
+Exchange (NEE) or Evapotranspiration (ET) data, providing critical
+insights into the dynamics of carbon dioxide and water vapor fluxes.
+
+``` r
+licor_data <- licor_files |> 
+  co2fluxtent::flux_calc(param = "nee", 
+                         skip = 9,
+                         vol = 2.197, 
+                         area = 1.69)
+  
 data |> 
   dplyr::mutate(filename = basename(filename)) 
 ```
 
-- The default calculation is ‘ET’.
+The output of the `flux_calc()` function is a tibble with the following
+columns:
 
-``` r
-# A tibble: 2 × 13
-  filename               tstart tfinish  wamb   tav   pav   cav flux_lm flux_nlm lm_rsqd non_linear_sigma aic_lm aic_nlm
-  <chr>                   <int>   <int> <dbl> <dbl> <dbl> <dbl>   <dbl>    <dbl>   <dbl>            <dbl>  <dbl>   <dbl>
-1 06172020_almont_night…     10      50  2.30 -65.7  75.7  316.  0.0284   0.0241   0.575          0.00530  -311.   -302.
-2 06172020_almont_night…     10      60  2.33 -65.7  75.7  311.  0.163    0.144    0.908          0.0145   -289.   -278.
-```
+- filename: The name of the file
 
-- For “NEE”
+- tstart: The start time of the measurement
 
-``` r
-data <- df |> 
-  flux_calc(param = "nee")
-```
+- tfinish: The end time of the measurement
+
+- camb: The ambient CO2 concentration
+
+- tav: The ambient air temperature
+
+- pav: The ambient air pressure
+
+- nee_lm: The linear model fit of the NEE data
+
+- nee_exp: The non-linear model fit of the NEE data
+
+- lm_rsqd: The R-squared value of the linear model fit
+
+- non_linear_sigma: The sigma value of the non-linear model fit
+
+- aic_lm: The AIC score of the linear model fit
+
+- aic_nlm: The AIC score of the non-linear model fit
 
 ``` r
 # A tibble: 2 × 12
-  filename  tstart tfinish  camb   tav   pav  nee_lm nee_exp lm_rsqd non_linear_sigma aic_lm aic_nlm
-  <chr>      <int>   <int> <dbl> <dbl> <dbl>   <dbl>   <dbl>   <dbl>            <dbl>  <dbl>   <dbl>
-1 ./inst/e…     20      80  308. -65.7  75.7 -21.8   -13.9    0.956             3.00   223.    306. 
-2 ./inst/e…     10      80  305. -65.7  75.7  -0.194  -0.157  0.0369            0.364   60.9    61.2
+  filename                         tstart tfinish  camb   tav   pav  nee_lm nee_exp lm_rsqd non_linear_sigma aic_lm aic_nlm
+  <chr>                             <int>   <int> <dbl> <dbl> <dbl>   <dbl>   <dbl>   <dbl>        <dbl>      <dbl>   <dbl>
+1 06172020_almont_night_1resp.txt    20      60    308. -65.7  75.7  -25.5   -12.0    0.952         3.23       137.    211. 
+2 06172020_almont_night_3resp.txt    10      80    305. -65.7  75.7  -0.194  -0.157   0.0369        0.364      60.9    61.2
 ```
