@@ -59,21 +59,21 @@ code is designed to efficiently batch analyze individual LiCOR runs. It
 is currently expected that all data to be processed adheres to the
 following naming format:
 
-**….measurementtype.txt**
+**./co2fluxtent/extdata/06172020_almont_night_3a.txt**
 
-The “measurementtype” term plays a crucial role in identifying the type
-of measurement, and the code assumes specific default patterns to
+The **measurementtype** term plays a crucial role in identifying the
+type of measurement, and the code assumes specific default patterns to
 recognize the measurement type. It is important to note that these
 patterns should be the last term in the filename. Here’s what each
 pattern signifies:
 
-- The letter “a” denotes an ambient measurement when the tent was not
+- The letter **a** denotes an ambient measurement when the tent was not
   applied.
 
-- The term “photo” represents a measurement conducted when the tent was
-  applied.
+- The term **photo** represents a measurement conducted when the tent
+  was applied.
 
-- The term “resp” signifies a measurement conducted when the tent was
+- The term **resp** signifies a measurement conducted when the tent was
   applied and shaded.
 
 By adhering to this standardized naming convention, our code streamlines
@@ -135,13 +135,18 @@ $resp_names
                  
 ```
 
-The `flux_calc` function is a powerful tool for analyzing LiCOR data,
-utilizing the results obtained from the `read_files` function as its
-input. With `flux_calc`, you can seamlessly process LiCOR data, making
-it an integral part of your data analysis workflow. This function allows
-you to perform linear and non-linear fitting to the Net Ecosystem
-Exchange (NEE) or Evapotranspiration (ET) data, providing critical
-insights into the dynamics of carbon dioxide and water vapor fluxes.
+The next step is to utilize the `flux_calc()` function, a valuable tool
+for analyzing LiCOR data. This function takes the results obtained from
+the `read_files()` function as its input, seamlessly integrating data
+processing into your analysis workflow. With `flux_calc()`, you can
+perform both linear and non-linear fitting to assess Net Ecosystem
+Exchange (NEE) or Evapotranspiration (ET) data, providing invaluable
+insights into carbon dioxide and water vapor flux dynamics. To select
+the parameter for calculation, you can modify the `param` argument, with
+the default set to **“et”**. The `skip` argument allows you to skip the
+first ‘n’ rows of data, and you can specify the volume of the chamber
+using the `vol` argument. Additionally, the `area` argument represents
+the chamber’s area in square meters.
 
 ``` r
 licor_data <- licor_files |> 
@@ -154,8 +159,14 @@ data |>
   dplyr::mutate(filename = basename(filename)) 
 ```
 
-The output of the `flux_calc()` function is a tibble with the following
-columns:
+While the `flux_calc()` function is in operation, it will prompt the
+user to specify the start and end times for conducting the curve
+fitting. This interactive feature empowers the user to exclude
+potentially transient data patterns detected during the data collection
+process. After the user selects the desired time range, both fitting
+procedures are executed automatically, and the results are promptly
+displayed in the console window. The output of the `flux_calc()`
+function is a tibble with the following columns:
 
 - filename: The name of the file
 
