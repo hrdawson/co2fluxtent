@@ -1,24 +1,29 @@
-#' NEE an ET calc
+#' NEE and ET Calculation from LiCOR Data
 #'
 #' @description
-#'
 #' `r lifecycle::badge("stable")`
 #'
-#' This function is meant to perform the linear and non-linear fitting to
-#' `NEE` data.
-#' @param fluxfiles files path name.
-#' @param param chose fitting model "nee" or "et".
-#' @param skip integer: the number of lines of the data file to skip
-#'              before beginning to read data.
+#' This function is designed to calculate Net Ecosystem Exchange (NEE) and
+#' Evapotranspiration (ET) by performing linear and non-linear fitting to LiCOR data.
+#' It incorporates various data preprocessing steps to ensure accurate interpretation,
+#' including unit conversion, dilution corrections, and handling of different types of
+#'  variables.
+#'
+#' @param fluxfiles A list of LiCOR data files obtained from the `read_files` function,
+#' including 'photo_names', 'resp_names', and 'ambient_names'.
+#' @param param A character string specifying the model to be fitted. Use "nee" for NEE
+#' calculation or "et" for ET calculation.
+#' @param skip An integer representing the number of lines to skip when reading
+#' the data files.
 #' @param vol The volume of the chamber in cubic meters.
 #' @param area The area of the chamber in square meters.
 #'
-#' @return  It will produce a plot of the data, queery the user if
-#'          they would like to modify the time interval over which
-#'          the data is fit, then print the paste statement of data
-#'          values.
-#' @export
+#' @return A data frame containing calculated parameters, including model coefficients,
+#' R-squared values, AIC scores, and other relevant information.
+#'
 #' @author Alex Brummer
+#' @export
+#'
 flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.69) {
 
 

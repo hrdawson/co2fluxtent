@@ -45,39 +45,72 @@ You can install the development version from
 
 ``` r
 # install.packages("pak")
-pak::pkg_install("PaulESantos/co2fluxtent")
+pak::pak("PaulESantos/co2fluxtent")
+
+#or
+
+devtools::install_github("PaulESantos/co2fluxtent")
 ```
 
 ### LiCOR Filename Formatting
 
-Since LiCOR measurements are often performed multiple times, the code is
-designed to batch analyze many individual LiCOR runs. Currently, it is
-assumed that all data to be read adheres to the following format:
+Given that LiCOR measurements are often conducted multiple times, our
+code is designed to efficiently batch analyze individual LiCOR runs. It
+is currently expected that all data to be processed adheres to the
+following naming format:
 
-**location date time of day trial.txt**
+**….measurementtype.txt**
 
-The modifications to the “trial” term are essential:
+The “measurementtype” term plays a crucial role in identifying the type
+of measurement, and the code assumes specific default patterns to
+recognize the measurement type. It is important to note that these
+patterns should be the last term in the filename. Here’s what each
+pattern signifies:
 
-- the letter “a” represents an ambient measurement when the tent was not
-  applied,
+- The letter “a” denotes an ambient measurement when the tent was not
+  applied.
 
-- the letters “resp” represent a measurement conducted when the tent was
-  applied and shaded,
+- The term “photo” represents a measurement conducted when the tent was
+  applied.
 
-- the final scenario is the measurement when the tent was applied but
-  unshaded.
+- The term “resp” signifies a measurement conducted when the tent was
+  applied and shaded.
 
-It is important to note that net ecosystem productivity can be measured
-directly from the standard LiCOR output. However, given the experimental
-protocol of measuring water vapor concentrations during photosynthesis
-and during respiration, we are, in fact, only measuring
-evapotranspiration (ET) and evaporation (E), respectively. Thus, we
-measure transpiration (T) as the difference between evapotranspiration
-and evaporation, or T = ET - E.
+By adhering to this standardized naming convention, our code streamlines
+the process of batch analyzing LiCOR data, making it more efficient and
+convenient for users.
 
-### Example
+### Usage
+
+The `read_files` function serves as a crucial component in our data
+analysis workflow. It is designed to streamline the process of gathering
+and organizing LiCOR data for analysis. By providing a path to the data
+files and specifying patterns to identify different types of
+measurements (ambient, photo, resp), the function simplifies the data
+retrieval process.
+
+Here’s how to use it:
+
+1.  Set your working directory to the folder containing your LiCOR data
+    files.
+
+2.  Call the `read_files` function, specifying the path to the data
+    files and the patterns for ambient, photo, and resp measurements.
+
+3.  The function will automatically identify and retrieve the relevant
+    data files based on your specified patterns.
+
+4.  It returns a structured list of LiCOR data files for further
+    analysis.
+
+This makes it easier to work with multiple LiCOR data files, ensuring
+that you can quickly and efficiently access the data you need for your
+analysis. The `read_files` function is a valuable tool for anyone
+working with LiCOR data, simplifying the initial data preparation steps
+in your workflow.
 
 ``` r
+
 df <- read_files("./inst/extdata")
 data <- df |> 
   flux_calc()
