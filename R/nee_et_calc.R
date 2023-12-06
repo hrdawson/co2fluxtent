@@ -29,12 +29,16 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
 
   neeet.fit <- function(filename) {
     input <- utils::read.table(filename, header = FALSE, skip = skip)
+    # Take only the first 90 observations of each file
     if (nrow(input) > 90) {
       input <- input[1:90, ]
     }
+    # If no ambient measurements, take the first five measurements of the file as ambient
     if (length(fluxfiles$ambient_names) < 1) {
       ambient <- input[1:5, ]
+    # If ambient exists, use that instead
     } else if (length(fluxfiles$ambient_names) >= 1) {
+      # How to parse if we're working with A, P, or R
       if (length(grep("resp.txt", filename, ignore.case = TRUE, value = FALSE)) == 1) {
         ambient_file <- paste(strsplit(filename, "resp.txt"), "a.txt", sep = "")
       } else if (length(grep("photo.txt", filename, ignore.case = TRUE, value = FALSE)) == 1) {
@@ -42,7 +46,7 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
       } else {
         ambient_file <- paste(strsplit(filename, ".txt"), "a.txt", sep = "")
       }
-
+    # If we have ambient, use it. Otherwise use first five.
       if (ambient_file %in% fluxfiles$ambient_names) {
         ambient <- utils::read.table(ambient_file, header = FALSE, skip = skip)
       } else {
@@ -56,6 +60,7 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
 
     ## Define vectors to work with
     ## variables class corrections form factor to numeric
+    # RENAMES THE COLUMNS. FIX TO MAKE REPRODUCIBLE. 
     time <- as.numeric(as.character(input[, 1])) # s
     co2 <- as.numeric(as.character(input[, 8])) # umol/mol
     h2o <- as.numeric(as.character(input[, 12])) # mmol/mol
@@ -78,9 +83,10 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
     wav_dil <- mean(h2o / (1 - (h2o / 1000)))
 
     # ambient co2 and water measurement to determine if leak is occurring.
+    # USE COLUMN NAME INSTEAD
     camb <- mean(as.numeric(as.character(ambient[, 8])) /
                    (1 - (as.numeric(as.character(ambient[, 12])) / 1000)))
-
+    # USE COLUMN NAME INSTEAD
     wamb <- mean(as.numeric(as.character(ambient[, 12])) /
                    (1 - (as.numeric(as.character(ambient[, 12])) / 1000)))
 
@@ -98,10 +104,10 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
       tag <- "w_prime"
     }
 
-
+    # Would it be better to use GGPLOT?
     plot(cw_prime ~ (time), main = filename, ylab = tag)
 
-    # Queery user for start time for fitting.  Default is set to 10 in
+    # Query user for start time for fitting.  Default is set to 10 in
     # the if() statement
     tstart <- readline("Enter preferred start time for fitting. Do not include units. \n Round to nearest integer second. \n Do not use 0. \n  If default of 10s is preferred, press 'return':")
     if (!grepl("^[0-9]+$", tstart)) {
@@ -145,7 +151,7 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
     df <- subset(x = df, subset = (time > tstart & time < tfinish))
 
     strt <- data.frame(A = c(150, 850), B = c(0, 1000))
-
+    # Required for the least squared
     optimize.start <- nls2::nls2(cw_prime ~ (cw_not - A) * exp(-time / B) + A,
                                  data = df,
                                  start = strt,
@@ -154,7 +160,7 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
                                  trace = FALSE
     )
     # (A=375, B=40)
-
+    # Least squared model
     uptake.fm <- stats::nls(cw_prime ~ (cw_not - A) * exp(-time / B) + A,
                             data = df,
                             start = stats::coef(optimize.start),
@@ -170,10 +176,11 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
 
     cw_ss <- summary(uptake.fm)$param[1]
     tau <- summary(uptake.fm)$param[2]
-
+    # If working with NEE, use this
     if ("nee" == param) {
       nee_exp <- ((camb - cw_ss) / (area * tau)) * (vol * pav * (1000) / (R * (tav + 273.15)))
       # equation 4 in Saleska 1999
+      # If working with ET, use this
     } else if ("et" == param) {
       flux_exp <- -((wamb - cw_ss) / (area * tau)) * (vol * pav * (1000 - wav) / (R * (tav + 273.15)))
       # equation 4 in Saleska 1999
@@ -228,10 +235,14 @@ flux_calc <- function(fluxfiles, param = "et", skip = 9, vol = 2.197, area = 1.6
   }
 
   ##########################
+  # If working with multiples of both P and R, do this
+  # Do we need to change to a >= for the instance of only one of each?
   if (length( fluxfiles$photo_names) > 1 & length( fluxfiles$resp_names) > 1) {
     stats.df <- purrr::map_df(c(fluxfiles$photo_names, fluxfiles$resp_names), ~ neeet.fit(.))
+    # If only resp, do this
   } else if (length(fluxfiles$resp_names) >= 1) {
     stats.df <- purrr::map_df(fluxfiles$resp_names, ~ neeet.fit(.))
+    # If only photo, do this
   } else if (length(fluxfiles$photo_names) >= 1) {
     stats.df <- purrr::map_df(fluxfiles$photo_names, ~ neeet.fit(.))
   }
